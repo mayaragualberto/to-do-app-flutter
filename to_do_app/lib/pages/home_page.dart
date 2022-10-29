@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do_app/util/todo_tile.dart';
-import 'package:to_do_app/util/dialog_box.dart';
-import 'package:to_do_app/data/database.dart';
+import 'package:ToDoApp/util/todo_tile.dart';
+import 'package:ToDoApp/util/dialog_box.dart';
+import 'package:ToDoApp/data/database.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    Key? key,
+    required this.onThemeModePressed,
+  }) : super(key: key);
+
+  final VoidCallback onThemeModePressed;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -74,15 +79,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.yellow[200],
       appBar: AppBar(
-        title: const Center(child: Text("TO DO")),
+        title: const Center(child: Text("To Do List")),
         elevation: 0,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: createNewTask,
-        child: const Icon(Icons.add),
       ),
       body: ListView.builder(
         itemCount: db.toDoList.length,
@@ -94,6 +95,31 @@ class _HomePageState extends State<HomePage> {
             deleteFunction: (context) => deleteTask(index),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: createNewTask,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).backgroundColor,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).backgroundColor,
+        shape: const CircularNotchedRectangle(),
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: widget.onThemeModePressed,
+              icon: Icon(
+                theme.brightness == Brightness.light
+                    ? Icons.dark_mode
+                    : Icons.light_mode,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

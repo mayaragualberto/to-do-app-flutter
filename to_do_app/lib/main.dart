@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:to_do_app/pages/home_page.dart';
+import 'package:ToDoApp/pages/home_page.dart';
+import 'package:ToDoApp/util/theme.dart';
 
 void main() async {
   // iniciar hive
@@ -12,15 +13,32 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode currentThemeMode = ThemeMode.light;
+
+  void toggleThemeMode() {
+    setState(() {
+      currentThemeMode = currentThemeMode == ThemeMode.light
+          ? ThemeMode.dark
+          : ThemeMode.light;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
-      theme: ThemeData(primarySwatch: Colors.yellow),
+      home: HomePage(onThemeModePressed: toggleThemeMode),
+      themeMode: currentThemeMode,
+      theme: ToDoTheme.light,
+      darkTheme: ToDoTheme.dark,
     );
   }
 }

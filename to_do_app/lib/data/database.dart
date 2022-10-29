@@ -10,8 +10,7 @@ class ToDoDataBase {
   // rodar esse método sempre que abrir o aplicativo
   void createInitialData() {
     toDoList = [
-      ["Make Tutorial", false],
-      ["Do Tutorial", false],
+      ["Atividade", false],
     ];
   }
 
